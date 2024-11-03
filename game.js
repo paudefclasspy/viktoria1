@@ -24,53 +24,80 @@ class Nation {
     }
 
     policy() {
-        this.stability += 1;
-        this.economy -= 1;
+        this.stability = Math.min(this.stability + 1, 10);
+        this.economy = Math.max(this.economy - 1, 0);
         return "Aplicaste una reforma laboral. +1 estabilidad, -1 economía.";
     }
 
     economyAction() {
-        this.economy += 2;
-        this.stability -= 1;
+        this.economy = Math.min(this.economy + 2, 10);
+        this.stability = Math.max(this.stability - 1, 0);
         return "Industrialización realizada. +2 economía, -1 estabilidad.";
     }
 
     diplomacy() {
-        this.prestige += 1;
+        this.prestige = Math.min(this.prestige + 1, 10);
         return "Alianza creada. +1 prestigio.";
     }
 
     militarization() {
-        this.militaryPower += 1;
-        this.economy -= 1;
+        this.militaryPower = Math.min(this.militaryPower + 1, 10);
+        this.economy = Math.max(this.economy - 1, 0);
         return "Reclutamiento realizado. +1 poder militar, -1 economía.";
     }
 
     researchAction() {
-        this.research += 1;
-        this.economy += 1;
+        this.research = Math.min(this.research + 1, 10);
+        this.economy = Math.min(this.economy + 1, 10);
         return "Desarrollos tecnológicos iniciados. +1 investigación, +1 economía.";
     }
 
     randomEvent() {
-    const events = [
-        { text: "Descubrimiento de oro", effect: () => { this.economy += 1; } },
-        { text: "Protestas laborales", effect: () => { this.stability -= 1; } },
-        { text: "Pandemia", effect: () => { this.stability -= 2; } },
-        { text: "Descubrimiento científico", effect: () => { this.research += 1; } },
-        { text: "Visita de Aurora", effect: () => {
-            this.economy += 2;
-            this.stability += 2;
-            this.militaryPower += 2;
-            this.prestige += 2;
-            this.research += 2;
-        }}
-    ];
-    const event = events[Math.floor(Math.random() * events.length)];
-    event.effect();
-    return `Evento aleatorio: ${event.text}`;
-}
-
+        const events = [
+            {
+                text: "Descubrimiento de oro",
+                effect: () => {
+                    this.economy = Math.min(this.economy + 1, 10);
+                    return "El descubrimiento de un yacimiento de oro aumenta la economía.";
+                }
+            },
+            {
+                text: "Protestas laborales",
+                effect: () => {
+                    this.stability = Math.max(this.stability - 1, 0);
+                    return "Las protestas laborales afectan la estabilidad de la nación.";
+                }
+            },
+            {
+                text: "Pandemia",
+                effect: () => {
+                    this.stability = Math.max(this.stability - 2, 0);
+                    return "Una pandemia provoca una crisis de salud y reduce la estabilidad.";
+                }
+            },
+            {
+                text: "Descubrimiento científico",
+                effect: () => {
+                    this.research = Math.min(this.research + 1, 10);
+                    return "Un descubrimiento científico impulsa la investigación.";
+                }
+            },
+            {
+                text: "Visita de Aurora",
+                effect: () => {
+                    this.economy = Math.min(this.economy + 2, 10);
+                    this.stability = Math.min(this.stability + 2, 10);
+                    this.militaryPower = Math.min(this.militaryPower + 2, 10);
+                    this.prestige = Math.min(this.prestige + 2, 10);
+                    this.research = Math.min(this.research + 2, 10);
+                    return "La visita de Aurora trae buena fortuna y mejora todos los aspectos.";
+                }
+            }
+        ];
+        const event = events[Math.floor(Math.random() * events.length)];
+        const effectMessage = event.effect();  // Obtener el mensaje del efecto
+        return `Evento aleatorio: ${event.text}. ${effectMessage}`; // Mensaje completo
+    }
 
     enemyAttack() {
         return `
@@ -143,15 +170,15 @@ function endTurn() {
 }
 
 function defend() {
-    nation.prestige += 1;
-    nation.economy -= 1;
-    nation.stability -= 1;
+    nation.prestige = Math.min(nation.prestige + 1, 10);
+    nation.economy = Math.max(nation.economy - 1, 0);
+    nation.stability = Math.max(nation.stability - 1, 0);
     gameOutput.innerHTML = "Defensa exitosa. +1 prestigio, -1 economía, -1 estabilidad.";
     updateStatus();
 }
 
 function notDefend() {
-    nation.prestige -= 1;
+    nation.prestige = Math.max(nation.prestige - 1, 0);
     gameOutput.innerHTML = "No te defendiste, tu prestigio ha disminuido.";
     updateStatus();
 }
@@ -166,4 +193,3 @@ function showActionValues() {
         <p>Investigación: +1 investigación, +1 economía</p>
     `;
 }
-
