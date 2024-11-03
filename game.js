@@ -108,16 +108,22 @@ class Nation {
     }
 }
 
-// Lista de nombres de enemigos
-const enemyNames = [
+// Lista de nombres de naciones
+const nationsList = [
     "La República de Verdisia",
     "El Imperio de Drakoria",
     "La Confederación del Norte",
     "El Reino de Eldoria",
-    "Los Clanes de Korrak",
+    "Los Clanes de Korrak"
+];
+
+// Lista de nombres de enemigos
+const enemyNames = [
     "La Alianza de Astaris",
     "La Dominion de Telsar",
-    "La Ciudad-Estado de Xandria"
+    "La Ciudad-Estado de Xandria",
+    "La República de Feran",
+    "El Imperio de Valtoria"
 ];
 
 let nation;
@@ -125,7 +131,22 @@ let gameOutput = document.getElementById("action-output");
 let gameStatus = document.getElementById("status");
 
 function startGame() {
-    const nationName = document.getElementById("nationName").value;
+    // Selecciona aleatoriamente 5 naciones
+    const randomNations = nationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
+    const nationSelect = document.getElementById("nationSelect");
+
+    // Llena el select con las naciones aleatorias
+    nationSelect.innerHTML = '';
+    randomNations.forEach((nationName, index) => {
+        nationSelect.innerHTML += `<option value="${nationName}">${nationName}</option>`;
+    });
+
+    document.getElementById("intro-section").style.display = "block";
+    document.getElementById("game-section").style.display = "none";
+}
+
+function selectNation() {
+    const nationName = document.getElementById("nationSelect").value;
     // Selecciona un nombre enemigo aleatorio
     const enemyName = enemyNames[Math.floor(Math.random() * enemyNames.length)];
     nation = new Nation(nationName, enemyName);
