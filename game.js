@@ -127,6 +127,9 @@ function updateEnemyAttack() {
         gameOutput.innerHTML += `<p>${nation.enemyAttack()}</p>`;
         nation.turnsSinceLastAttack = 0; // Reiniciar contador de turnos
         disableActionButtons(); // Deshabilitar botones de acción
+        // Mostrar botones de defensa
+        document.getElementById("defendButton").disabled = false;
+        document.getElementById("notDefendButton").disabled = false;
     }
 }
 
@@ -142,6 +145,9 @@ function defend() {
     
     isAttackPhase = false; // Terminar fase de ataque
     enableActionButtons(); // Rehabilitar botones de acción
+    // Ocultar botones de defensa
+    document.getElementById("defendButton").disabled = true;
+    document.getElementById("notDefendButton").disabled = true;
     updateGameStatus();
 }
 
@@ -151,6 +157,9 @@ function notDefend() {
     
     isAttackPhase = false; // Terminar fase de ataque
     enableActionButtons(); // Rehabilitar botones de acción
+    // Ocultar botones de defensa
+    document.getElementById("defendButton").disabled = true;
+    document.getElementById("notDefendButton").disabled = true;
     updateGameStatus();
 }
 
