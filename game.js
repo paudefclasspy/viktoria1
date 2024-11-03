@@ -1,200 +1,51 @@
-class President {
-    constructor() {
-        this.name = this.generateRandomName();
-        this.age = this.getRandomAge();
-        this.administration = 1; // Valor inicial
-        this.intelligence = this.getRandomInt(1, 5); // Valor aleatorio entre 1 y 5
-        this.military = this.getRandomInt(1, 5); // Valor aleatorio entre 1 y 5
-        this.nationalStrength = this.getRandomInt(1, 5); // Valor aleatorio entre 1 y 5
-    }
-
-    generateRandomName() {
-        const names = ['Andrés', 'Beatriz', 'Carlos', 'Daniela', 'Eduardo', 'Fernanda'];
-        return names[Math.floor(Math.random() * names.length)];
-    }
-
-    getRandomAge() {
-        return Math.floor(Math.random() * (60 - 30 + 1)) + 30; // Edad entre 30 y 60
-    }
-
-    getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    increaseAdministration() {
-        this.administration++;
-    }
-
-    showProfile() {
-        return `
-            <p><strong>Presidente:</strong> ${this.name}, ${this.age} años</p>
-            <p><strong>Administración:</strong> ${this.administration}</p>
-            <p><strong>Inteligencia:</strong> ${this.intelligence}</p>
-            <p><strong>Militar:</strong> ${this.military}</p>
-            <p><strong>Fuerza Nacional:</strong> ${this.nationalStrength}</p>
-        `;
-    }
-}
-
 class Nation {
     constructor(name, enemyName) {
         this.name = name;
-        this.economy = 5;
-        this.stability = 7;
-        this.militaryPower = 4;
-        this.prestige = 3;
-        this.research = 2;
-        this.year = 1840;
         this.enemyName = enemyName;
+        this.stability = 5;
+        this.militaryPower = 1;
+        this.administration = 1;
+        this.territory = 1;
         this.turnsSinceLastAttack = 0;
-        this.territories = 1; // Cada nación empieza con 1 territorio
-        this.maxTerritories = 7; // Máximo de territorios
-        this.president = new President(); // Asignar un presidente aleatorio
     }
 
     showStatus() {
         return `
-            <p><strong>Año:</strong> ${this.year}</p>
-            <p><strong>Nación:</strong> ${this.name}</p>
-            <p><strong>Economía:</strong> ${this.economy}/10</p>
-            <p><strong>Estabilidad:</strong> ${this.stability}/10</p>
-            <p><strong>Poder Militar:</strong> ${this.militaryPower}/10</p>
-            <p><strong>Prestigio:</strong> ${this.prestige}/10</p>
-            <p><strong>Investigación:</strong> ${this.research}/10</p>
-            <p><strong>Territorios:</strong> ${this.territories}/${this.maxTerritories}</p>
-            ${this.president.showProfile()} <!-- Mostrar perfil del presidente -->
+            Nación: ${this.name} <br>
+            Estabilidad: ${this.stability} <br>
+            Poder Militar: ${this.militaryPower} <br>
+            Administración: ${this.administration} <br>
+            Territorios: ${this.territory} <br>
         `;
-    }
-
-    policy() {
-        this.stability = Math.min(this.stability + 1, 10);
-        this.economy = Math.max(this.economy - 1, 0);
-        return "Aplicaste una reforma laboral. +1 estabilidad, -1 economía.";
-    }
-
-    economyAction() {
-        this.economy = Math.min(this.economy + 2, 10);
-        this.stability = Math.max(this.stability - 1, 0);
-        return "Industrialización realizada. +2 economía, -1 estabilidad.";
-    }
-
-    diplomacy() {
-        this.prestige = Math.min(this.prestige + 1, 10);
-        return "Alianza creada. +1 prestigio.";
-    }
-
-    militarization() {
-        this.militaryPower = Math.min(this.militaryPower + 1, 10);
-        this.economy = Math.max(this.economy - 1, 0);
-        return "Reclutamiento realizado. +1 poder militar, -1 economía.";
-    }
-
-    researchAction() {
-        this.research = Math.min(this.research + 1, 10);
-        this.economy = Math.min(this.economy + 1, 10);
-        return "Desarrollos tecnológicos iniciados. +1 investigación, +1 economía.";
-    }
-
-    randomEvent() {
-        const events = [
-            {
-                text: "Descubrimiento de oro",
-                effect: () => {
-                    this.economy = Math.min(this.economy + 1, 10);
-                    return "El descubrimiento de un yacimiento de oro aumenta la economía.";
-                }
-            },
-            {
-                text: "Protestas laborales",
-                effect: () => {
-                    this.stability = Math.max(this.stability - 1, 0);
-                    return "Las protestas laborales afectan la estabilidad de la nación.";
-                }
-            },
-            {
-                text: "Pandemia",
-                effect: () => {
-                    this.stability = Math.max(this.stability - 2, 0);
-                    return "Una pandemia provoca una crisis de salud y reduce la estabilidad.";
-                }
-            },
-            {
-                text: "Descubrimiento científico",
-                effect: () => {
-                    this.research = Math.min(this.research + 1, 10);
-                    return "Un descubrimiento científico impulsa la investigación.";
-                }
-            },
-            {
-                text: "Visita de Aurora",
-                effect: () => {
-                    this.economy = Math.min(this.economy + 2, 10);
-                    this.stability = Math.min(this.stability + 2, 10);
-                    this.militaryPower = Math.min(this.militaryPower + 2, 10);
-                    this.prestige = Math.min(this.prestige + 2, 10);
-                    this.research = Math.min(this.research + 2, 10);
-                    return "La visita de Aurora trae buena fortuna y mejora todos los aspectos.";
-                }
-            },
-            {
-                text: "Asamblea del Congreso",
-                effect: () => {
-                    this.president.increaseAdministration();
-                    return "El Congreso ha aprobado nuevas reformas que mejoran la administración.";
-                }
-            }
-        ];
-        const event = events[Math.floor(Math.random() * events.length)];
-        const effectMessage = event.effect();  // Obtener el mensaje del efecto
-        return `Evento aleatorio: ${event.text}. ${effectMessage}`; // Mensaje completo
     }
 
     enemyAttack() {
-        return `
-            <p><strong>${this.enemyName}</strong> está atacando.</p>
-            <button onclick="defend()">Defenderse</button>
-            <button onclick="notDefend()">No defenderse</button>
-        `;
+        const success = Math.random() < 0.5; // 50% de probabilidad de ataque exitoso
+        if (success) {
+            this.stability -= 1; // Disminuir estabilidad
+            return `${this.enemyName} ha atacado y ha causado daño. Estabilidad ahora: ${this.stability}`;
+        } else {
+            return `${this.enemyName} intentó atacar, pero falló.`;
+        }
     }
 
     conquerTerritory() {
-        if (this.territories < this.maxTerritories) {
-            this.territories++;
-            this.president.increaseAdministration(); // Aumentar administración con cada conquista
-            return `Has conquistado un nuevo territorio. Territorios actuales: ${this.territories}/${this.maxTerritories}.`;
+        if (this.territory < 7) {
+            this.territory++;
+            this.administration++; // Aumentar administración al conquistar
+            return `Has conquistado un nuevo territorio. Total territorios: ${this.territory}`;
         } else {
-            return "No puedes conquistar más territorios; has alcanzado el límite máximo.";
+            return `Ya tienes el máximo de territorios.`;
         }
     }
 }
 
-// Lista de nombres de naciones
-const allNationsList = [
-    "La República de Verdisia",
-    "El Imperio de Drakoria",
-    "La Confederación del Norte",
-    "El Reino de Eldoria",
-    "Los Clanes de Korrak",
-    "La República de Novaria",
-    "La Unión de Teravia",
-    "El Reino de Lysoria",
-    "La Confederación de Azura",
-    "El Imperio de Caelum"
-];
-
-// Lista de nombres de enemigos
-const enemyNames = [
-    "La Alianza de Astaris",
-    "La Dominion de Telsar",
-    "La Ciudad-Estado de Xandria",
-    "La República de Feran",
-    "El Imperio de Valtoria"
-];
-
 let nation;
-let gameOutput = document.getElementById("action-output");
-let gameStatus = document.getElementById("status");
-let isAttackPhase = false; // Variable para controlar la fase de ataque
+let isAttackPhase = false;
+const allNationsList = ['Nación A', 'Nación B', 'Nación C', 'Nación D', 'Nación E', 'Nación F', 'Nación G', 'Nación H'];
+const enemyNames = ['Imperio X', 'República Y', 'Confederación Z', 'Reino W', 'Alianza T'];
+const gameOutput = document.getElementById("gameOutput");
+const gameStatus = document.getElementById("gameStatus");
 
 function startGame() {
     const randomNations = allNationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
@@ -225,65 +76,55 @@ function updateGameStatus() {
 }
 
 function takeAction(action) {
+    if (isAttackPhase) {
+        alert("Debes resolver la fase de ataque antes de realizar otra acción.");
+        return; // Evitar realizar acciones durante la fase de ataque
+    }
+    
     let actionMessage;
     switch (action) {
         case 'policy':
-            actionMessage = nation.policy();
+            actionMessage = "Política implementada."; // Placeholder para política
             break;
         case 'economy':
-            actionMessage = nation.economyAction();
+            actionMessage = "Economía mejorada."; // Placeholder para economía
             break;
         case 'diplomacy':
-            actionMessage = nation.diplomacy();
+            actionMessage = "Diplomacia aumentada."; // Placeholder para diplomacia
             break;
         case 'military':
-            actionMessage = nation.militarization();
+            actionMessage = "Militarización aumentada."; // Placeholder para militarización
             break;
         case 'research':
-            actionMessage = nation.researchAction();
+            actionMessage = "Investigación completada."; // Placeholder para investigación
             break;
         default:
             return;
     }
     
-    gameOutput.innerHTML = `<p>${actionMessage}</p>`; // Reemplazar el contenido anterior
-    randomEvents();
-    updateGameStatus();
+    // Limpiar la salida anterior antes de agregar un nuevo mensaje
+    gameOutput.innerHTML = `<p>${actionMessage}</p>`;
+    
+    randomEvents(); // Llamar a eventos aleatorios
+    updateGameStatus(); // Actualizar estado del juego
+    updateEnemyAttack(); // Verificar ataques después de cada acción
 }
 
-    
-    let actionMessage;
-    switch (action) {
-        case 'policy':
-            actionMessage = nation.policy();
-            break;
-        case 'economy':
-            actionMessage = nation.economyAction();
-            break;
-        case 'diplomacy':
-            actionMessage = nation.diplomacy();
-            break;
-        case 'military':
-            actionMessage = nation.militarization();
-            break;
-        case 'research':
-            actionMessage = nation.researchAction();
-            break;
-        default:
-            return;
+function randomEvents() {
+    if (Math.random() < 0.2) { // 20% de probabilidad de evento aleatorio
+        const eventMessage = "Visita de Aurora: Todos los valores aumentan 2 puntos.";
+        gameOutput.innerHTML += `<p>${eventMessage}</p>`;
+        nation.stability = Math.min(nation.stability + 2, 10);
+        nation.militaryPower = Math.min(nation.militaryPower + 2, 10);
+        nation.administration = Math.min(nation.administration + 2, 10);
     }
-    
-    gameOutput.innerHTML = `<p>${actionMessage}</p>`; // Reemplazar el contenido anterior
-    randomEvents();
-    updateGameStatus();
-    updateEnemyAttack(); // Llamar después de cada acción para verificar ataque enemigo
 }
 
 function updateEnemyAttack() {
     nation.turnsSinceLastAttack++;
     if (nation.turnsSinceLastAttack === 3) {
         isAttackPhase = true; // Activar fase de ataque
-        gameOutput.innerHTML += nation.enemyAttack();
+        gameOutput.innerHTML += `<p>${nation.enemyAttack()}</p>`;
         nation.turnsSinceLastAttack = 0; // Reiniciar contador de turnos
         disableActionButtons(); // Deshabilitar botones de acción
     }
@@ -315,15 +156,13 @@ function notDefend() {
 
 function disableActionButtons() {
     document.querySelectorAll('#game-section button').forEach(button => {
-        if (button.innerText !== "Conquistar Territorio" && button.innerText !== "Valores de Acciones") {
-            button.disabled = true; // Deshabilitar botones de acción
-        }
+        button.disabled = true; // Deshabilitar todos los botones de acción
     });
 }
 
 function enableActionButtons() {
     document.querySelectorAll('#game-section button').forEach(button => {
-        button.disabled = false; // Rehabilitar botones de acción
+        button.disabled = false; // Rehabilitar todos los botones de acción
     });
 }
 
