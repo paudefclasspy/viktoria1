@@ -245,10 +245,12 @@ function takeAction(action) {
         default:
             return;
     }
-    gameOutput.innerHTML += `<p>${actionMessage}</p>`;
+    
+    gameOutput.innerHTML = `<p>${actionMessage}</p>`; // Reemplazar el contenido anterior
     randomEvents();
     updateGameStatus();
 }
+
 
 function randomEvents() {
     if (Math.random() < 0.3) { // 30% de probabilidad de evento aleatorio
