@@ -194,7 +194,7 @@ const enemyNames = [
 let nation;
 let gameOutput = document.getElementById("action-output");
 let gameStatus = document.getElementById("status");
-let isAttackPhase = true; // Variable para controlar la fase de ataque
+let isAttackPhase = false; // Variable para controlar la fase de ataque
 
 function startGame() {
     const randomNations = allNationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
@@ -254,6 +254,7 @@ function takeAction(action) {
     gameOutput.innerHTML = `<p>${actionMessage}</p>`; // Reemplazar el contenido anterior
     randomEvents();
     updateGameStatus();
+    updateEnemyAttack(); // Llamar después de cada acción para verificar ataque enemigo
 }
 
 function updateEnemyAttack() {
