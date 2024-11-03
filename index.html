@@ -24,17 +24,20 @@
         <h2>Estado de la Nación</h2>
         <div id="gameStatus"></div>
         <div id="gameOutput"></div>
-        
+
+        <h3>Acciones</h3>
         <button onclick="takeAction('policy')">Implementar Política</button>
         <button onclick="takeAction('economy')">Mejorar Economía</button>
         <button onclick="takeAction('diplomacy')">Aumentar Diplomacia</button>
-        <button onclick="takeAction('military')">Aumentar Militarización</button>
-        <button onclick="takeAction('research')">Completar Investigación</button>
+        <button onclick="takeAction('military')">Militarizar</button>
+        <button onclick="takeAction('research')">Investigar</button>
         <button onclick="conquer()">Conquistar Territorio</button>
-        
-        <h3>Fase de Defensa</h3>
-        <button id="defendButton" onclick="defend()" disabled>Defender</button>
-        <button id="notDefendButton" onclick="notDefend()" disabled>No Defender</button>
+
+        <div id="attackSection" style="margin-top: 20px;">
+            <h3>Defenderse del Ataque</h3>
+            <button id="defendButton" onclick="defend()" disabled>Defender</button>
+            <button id="notDefendButton" onclick="notDefend()" disabled>No Defender</button>
+        </div>
     </div>
 
     <script src="game.js"></script>
