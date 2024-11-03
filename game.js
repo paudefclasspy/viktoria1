@@ -73,13 +73,26 @@ class Nation {
     }
 }
 
+// Lista de nombres de enemigos
+const enemyNames = [
+    "La República de Verdisia",
+    "El Imperio de Drakoria",
+    "La Confederación del Norte",
+    "El Reino de Eldoria",
+    "Los Clanes de Korrak",
+    "La Alianza de Astaris",
+    "La Dominion de Telsar",
+    "La Ciudad-Estado de Xandria"
+];
+
 let nation;
 let gameOutput = document.getElementById("action-output");
 let gameStatus = document.getElementById("status");
 
 function startGame() {
     const nationName = document.getElementById("nationName").value;
-    const enemyName = document.getElementById("enemyName").value;
+    // Selecciona un nombre enemigo aleatorio
+    const enemyName = enemyNames[Math.floor(Math.random() * enemyNames.length)];
     nation = new Nation(nationName, enemyName);
     document.getElementById("intro-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
@@ -107,12 +120,12 @@ function endTurn() {
     nation.year += 1;
     nation.turnsSinceLastAttack += 1;
     
-    // Random event
+    // Evento aleatorio
     if (Math.random() < 0.3) {
         gameOutput.innerHTML += `<p>${nation.randomEvent()}</p>`;
     }
 
-    // Check for enemy attack every 3 turns
+    // Verifica el ataque enemigo cada 3 turnos
     if (nation.turnsSinceLastAttack >= 3) {
         gameOutput.innerHTML += nation.enemyAttack();
         nation.turnsSinceLastAttack = 0;
@@ -145,3 +158,4 @@ function showActionValues() {
         <p>Investigación: +1 investigación, +1 economía</p>
     `;
 }
+
