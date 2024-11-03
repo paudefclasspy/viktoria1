@@ -3,66 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Estrategia de Naciones</title>
+    <title>Juego de Estrategia</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        #game-section, #intro-section {
-            display: none;
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            border-radius: 8px;
-        }
-        #nationSelect {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            color: #333;
-            transition: border-color 0.3s;
-        }
-        #nationSelect:hover {
-            border-color: #007BFF;
-        }
-        button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #action-output {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #e7f3fe;
-            border-left: 6px solid #2196F3;
-        }
-        #status {
-            font-weight: bold;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #game-section { display: none; }
+        #intro-section { display: block; }
+        button { margin-top: 10px; }
+        #gameOutput { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h1>Juego de Estrategia de Naciones</h1>
 
     <div id="intro-section">
         <h2>Selecciona tu Nación</h2>
@@ -72,20 +22,24 @@
 
     <div id="game-section">
         <h2>Estado de la Nación</h2>
-        <div id="status"></div>
-        <div id="action-output"></div>
-        <button onclick="takeAction('policy')">Política Interior</button>
-        <button onclick="takeAction('economy')">Economía</button>
-        <button onclick="takeAction('diplomacy')">Diplomacia</button>
-        <button onclick="takeAction('military')">Militarización</button>
-        <button onclick="takeAction('research')">Investigación</button>
-        <button onclick="conquer()">Conquistar Territorio</button> <!-- Nuevo botón -->
-        <button onclick="showActionValues()">Valores de Acciones</button>
+        <div id="gameStatus"></div>
+        <div id="gameOutput"></div>
+        
+        <button onclick="takeAction('policy')">Implementar Política</button>
+        <button onclick="takeAction('economy')">Mejorar Economía</button>
+        <button onclick="takeAction('diplomacy')">Aumentar Diplomacia</button>
+        <button onclick="takeAction('military')">Aumentar Militarización</button>
+        <button onclick="takeAction('research')">Completar Investigación</button>
+        <button onclick="conquer()">Conquistar Territorio</button>
+        
+        <h3>Fase de Defensa</h3>
+        <button id="defendButton" onclick="defend()" disabled>Defender</button>
+        <button id="notDefendButton" onclick="notDefend()" disabled>No Defender</button>
     </div>
 
     <script src="game.js"></script>
     <script>
-        startGame();
+        startGame(); // Iniciar el juego al cargar la página
     </script>
 </body>
 </html>
