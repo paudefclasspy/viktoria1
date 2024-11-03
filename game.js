@@ -225,10 +225,32 @@ function updateGameStatus() {
 }
 
 function takeAction(action) {
-    if (isAttackPhase) {
-        alert("Debes resolver la fase de ataque antes de realizar otra acción.");
-        return; // Evitar realizar acciones durante la fase de ataque
+    let actionMessage;
+    switch (action) {
+        case 'policy':
+            actionMessage = nation.policy();
+            break;
+        case 'economy':
+            actionMessage = nation.economyAction();
+            break;
+        case 'diplomacy':
+            actionMessage = nation.diplomacy();
+            break;
+        case 'military':
+            actionMessage = nation.militarization();
+            break;
+        case 'research':
+            actionMessage = nation.researchAction();
+            break;
+        default:
+            return;
     }
+    
+    gameOutput.innerHTML = `<p>${actionMessage}</p>`; // Reemplazar el contenido anterior
+    randomEvents();
+    updateGameStatus();
+}
+
     
     let actionMessage;
     switch (action) {
