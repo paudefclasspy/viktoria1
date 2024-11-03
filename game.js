@@ -109,12 +109,17 @@ class Nation {
 }
 
 // Lista de nombres de naciones
-const nationsList = [
+const allNationsList = [
     "La República de Verdisia",
     "El Imperio de Drakoria",
     "La Confederación del Norte",
     "El Reino de Eldoria",
-    "Los Clanes de Korrak"
+    "Los Clanes de Korrak",
+    "La República de Novaria",
+    "La Unión de Teravia",
+    "El Reino de Lysoria",
+    "La Confederación de Azura",
+    "El Imperio de Caelum"
 ];
 
 // Lista de nombres de enemigos
@@ -131,13 +136,13 @@ let gameOutput = document.getElementById("action-output");
 let gameStatus = document.getElementById("status");
 
 function startGame() {
-    // Selecciona aleatoriamente 5 naciones
-    const randomNations = nationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
+    // Selecciona aleatoriamente 5 naciones de la lista completa
+    const randomNations = allNationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
     const nationSelect = document.getElementById("nationSelect");
 
     // Llena el select con las naciones aleatorias
     nationSelect.innerHTML = '';
-    randomNations.forEach((nationName, index) => {
+    randomNations.forEach((nationName) => {
         nationSelect.innerHTML += `<option value="${nationName}">${nationName}</option>`;
     });
 
