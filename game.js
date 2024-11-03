@@ -194,9 +194,9 @@ const enemyNames = [
 let nation;
 let gameOutput = document.getElementById("action-output");
 let gameStatus = document.getElementById("status");
+let isAttackPhase = false; // Variable para controlar la fase de ataque
 
 function startGame() {
-    // Selecciona aleatoriamente 5 naciones de la lista completa
     const randomNations = allNationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
     const nationSelect = document.getElementById("nationSelect");
     nationSelect.innerHTML = ""; // Limpiar opciones anteriores
@@ -225,6 +225,11 @@ function updateGameStatus() {
 }
 
 function takeAction(action) {
+    if (isAttackPhase) {
+        alert("Debes resolver la fase de ataque antes de realizar otra acción.");
+        return; // Evitar realizar acciones durante la fase de ataque
+    }
+    
     let actionMessage;
     switch (action) {
         case 'policy':
@@ -251,22 +256,13 @@ function takeAction(action) {
     updateGameStatus();
 }
 
-
-function randomEvents() {
-    if (Math.random() < 0.3) { // 30% de probabilidad de evento aleatorio
-        const eventMessage = nation.randomEvent();
-        gameOutput.innerHTML += `<p>${eventMessage}</p>`;
-    }
-    nation.year++;
-    gameOutput.innerHTML += `<p>Año: ${nation.year}</p>`;
-    updateEnemyAttack();
-}
-
 function updateEnemyAttack() {
     nation.turnsSinceLastAttack++;
     if (nation.turnsSinceLastAttack === 3) {
+        isAttackPhase = true; // Activar fase de ataque
         gameOutput.innerHTML += nation.enemyAttack();
         nation.turnsSinceLastAttack = 0; // Reiniciar contador de turnos
+        disableActionButtons(); // Deshabilitar botones de acción
     }
 }
 
@@ -279,13 +275,33 @@ function defend() {
         gameOutput.innerHTML += `<p>Tu defensa falló. ${nation.enemyName} ha causado daño.</p>`;
         nation.stability--; // Disminuir estabilidad en caso de fallo
     }
+    
+    isAttackPhase = false; // Terminar fase de ataque
+    enableActionButtons(); // Rehabilitar botones de acción
     updateGameStatus();
 }
 
 function notDefend() {
     gameOutput.innerHTML += `<p>Decidiste no defenderte de ${nation.enemyName}. Tu nación ha sufrido consecuencias.</p>`;
     nation.stability--; // Disminuir estabilidad por no defenderse
+    
+    isAttackPhase = false; // Terminar fase de ataque
+    enableActionButtons(); // Rehabilitar botones de acción
     updateGameStatus();
+}
+
+function disableActionButtons() {
+    document.querySelectorAll('#game-section button').forEach(button => {
+        if (button.innerText !== "Conquistar Territorio" && button.innerText !== "Valores de Acciones") {
+            button.disabled = true; // Deshabilitar botones de acción
+        }
+    });
+}
+
+function enableActionButtons() {
+    document.querySelectorAll('#game-section button').forEach(button => {
+        button.disabled = false; // Rehabilitar botones de acción
+    });
 }
 
 function conquer() {
