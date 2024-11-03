@@ -53,16 +53,24 @@ class Nation {
     }
 
     randomEvent() {
-        const events = [
-            { text: "Descubrimiento de oro", effect: () => { this.economy += 1; } },
-            { text: "Protestas laborales", effect: () => { this.stability -= 1; } },
-            { text: "Pandemia", effect: () => { this.stability -= 2; } },
-            { text: "Descubrimiento científico", effect: () => { this.research += 1; } }
-        ];
-        const event = events[Math.floor(Math.random() * events.length)];
-        event.effect();
-        return `Evento aleatorio: ${event.text}`;
-    }
+    const events = [
+        { text: "Descubrimiento de oro", effect: () => { this.economy += 1; } },
+        { text: "Protestas laborales", effect: () => { this.stability -= 1; } },
+        { text: "Pandemia", effect: () => { this.stability -= 2; } },
+        { text: "Descubrimiento científico", effect: () => { this.research += 1; } },
+        { text: "Visita de Aurora", effect: () => {
+            this.economy += 2;
+            this.stability += 2;
+            this.militaryPower += 2;
+            this.prestige += 2;
+            this.research += 2;
+        }}
+    ];
+    const event = events[Math.floor(Math.random() * events.length)];
+    event.effect();
+    return `Evento aleatorio: ${event.text}`;
+}
+
 
     enemyAttack() {
         return `
