@@ -76,11 +76,65 @@ function updateGameStatus() {
     gameStatus.innerHTML = nation.showStatus(); // Mostrar estado de la nación
 }
 
-function takeAction(action) {
-    if (isAttackPhase) {
-        alert("Debes resolver la fase de ataque antes de realizar otra acción.");
-        return; // Evitar realizar acciones durante la fase de ataque
+// Ajuste en la función takeAction para cada acción
+function takeAction(actionType) {
+    let increment = Math.random() * (0.5 - 0.3) + 0.3; // Incremento aleatorio entre 0.3 y 0.5
+
+    switch (actionType) {
+        case 'policy':
+            if (nation.stability < 12) {
+                nation.stability = Math.min(nation.stability + increment, 12); // Incremento con límite de 12
+                gameOutput.innerHTML += `<p>Has implementado nuevas políticas. Estabilidad aumentada a ${nation.stability.toFixed(1)}.</p>`;
+            }
+            break;
+
+        case 'economy':
+            if (nation.economy < 12) {
+                nation.economy = Math.min(nation.economy + increment, 12);
+                gameOutput.innerHTML += `<p>Has mejorado la economía. Economía aumentada a ${nation.economy.toFixed(1)}.</p>`;
+            }
+            break;
+
+        case 'military':
+            if (nation.militaryPower < 12) {
+                nation.militaryPower = Math.min(nation.militaryPower + increment, 12);
+                gameOutput.innerHTML += `<p>Has fortalecido el poder militar. Poder militar aumentado a ${nation.militaryPower.toFixed(1)}.</p>`;
+            }
+            break;
+
+        case 'diplomacy':
+            if (nation.diplomacy < 12) {
+                nation.diplomacy = Math.min(nation.diplomacy + increment, 12);
+                gameOutput.innerHTML += `<p>Has mejorado la diplomacia. Diplomacia aumentada a ${nation.diplomacy.toFixed(1)}.</p>`;
+            }
+            break;
+
+        case 'research':
+            if (nation.research < 12) {
+                nation.research = Math.min(nation.research + increment, 12);
+                gameOutput.innerHTML += `<p>Has avanzado en investigación. Investigación aumentada a ${nation.research.toFixed(1)}.</p>`;
+            }
+            break;
+
+        case 'conquer':
+            if (nation.territories < 7) {
+                nation.territories += 1; // Incrementa el territorio en 1
+                nation.economy = Math.min(nation.economy + 0.3, 12); // Incremento de economía en 0.3, con límite de 12
+                gameOutput.innerHTML += `<p>Has conquistado un nuevo territorio. Territorios: ${nation.territories}, Economía aumentada a ${nation.economy.toFixed(1)}.</p>`;
+            } else {
+                gameOutput.innerHTML += `<p>No puedes conquistar más territorios sin aumentar la Administración.</p>`;
+            }
+            break;
+
+        default:
+            gameOutput.innerHTML += `<p>Acción no reconocida.</p>`;
     }
+
+    updateGameStatus(); // Actualiza el estado del juego después de cada acción
+}
+
+// Mantiene el resto del código igual
+
     
     let actionMessage;
     switch (action) {
