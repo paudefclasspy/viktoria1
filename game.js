@@ -121,6 +121,8 @@ function randomEvents() {
 
 // Aquí las clases y funciones previas...
 
+// Clase y funciones anteriores...
+
 function updateEnemyAttack() {
     nation.turnsSinceLastAttack++;
     if (nation.turnsSinceLastAttack === 3) {
@@ -166,14 +168,16 @@ function endAttackPhase() {
 }
 
 function disableActionButtons() {
-    document.querySelectorAll('#game-section button').forEach(button => {
-        button.disabled = true; // Deshabilitar todos los botones de acción
+    document.querySelectorAll('#game-section button:not(#defendButton):not(#notDefendButton)').forEach(button => {
+        button.disabled = true; // Deshabilitar todos los botones de acción, excepto los de defensa
     });
 }
 
 function enableActionButtons() {
     document.querySelectorAll('#game-section button').forEach(button => {
-        button.disabled = false; // Rehabilitar todos los botones de acción
+        if (button.id !== "defendButton" && button.id !== "notDefendButton") {
+            button.disabled = false; // Rehabilitar todos los botones de acción, excepto los de defensa
+        }
     });
 }
 
