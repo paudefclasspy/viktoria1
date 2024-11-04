@@ -47,22 +47,56 @@ const enemyNames = ['Imperio X', 'República Y', 'Confederación Z', 'Reino W', 
 const gameOutput = document.getElementById("gameOutput");
 const gameStatus = document.getElementById("gameStatus");
 
-function startGame() {
-    const randomNations = allNationsList.sort(() => 0.5 - Math.random()).slice(0, 5);
-    const nationSelect = document.getElementById("nationSelect");
-    nationSelect.innerHTML = ""; // Limpiar opciones anteriores
+function initializeNationOptions() {
+    const nationSelector = document.getElementById("nationSelector");
+    nationSelector.innerHTML = ""; // Limpia las opciones previas
+    let selectedNations = [];
 
-    randomNations.forEach(nation => {
-        const option = document.createElement("option");
-        option.value = nation;
-        option.textContent = nation;
-        nationSelect.appendChild(option);
-    });
-
-    document.getElementById("intro-section").style.display = "block"; // Mostrar selección de nación
-    document.getElementById("attackSection").style.display = "none"; // Ocultar sección de defensa al inicio
+    // Selecciona 5 naciones aleatorias de la lista de naciones
+    while (selectedNations.length < 5) {
+        const randomNation = nationsList[Math.floor(Math.random() * nationsList.length)];
+        if (!selectedNations.includes(randomNation)) {
+            selectedNations.push(randomNation);
+            const option = document.createElement("option");
+            option.value = randomNation;
+            option.text = randomNation;
+            nationSelector.add(option);
+        }
+    }
 }
 
+function startGame() {
+    const selectedNation = document.getElementById("nationSelector").value;
+    if (!selectedNation) {
+        gameOutput.innerHTML = "<p>Por favor, selecciona una nación para comenzar.</p>";
+        return;
+    }
+
+    nation = {
+        name: selectedNation,
+        stability: 5,
+        economy: 5,
+        militaryPower: 5,
+        diplomacy: 5,
+        research: 5,
+        territories: 1,
+        turnsSinceLastAttack: 0,
+        enemyName: getRandomEnemyName()
+    };
+
+    document.getElementById("game-section").style.display = "block";
+    document.getElementById("gameOutput").innerHTML = `<p>Has seleccionado la nación de ${nation.name}. ¡Buena suerte!</p>`;
+    updateGameStatus();
+}
+
+function getRandomEnemyName() {
+    const enemies = ["Kordovia", "Zaneth", "Brikora", "Methoria", "Lanora"];
+    return enemies[Math.floor(Math.random() * enemies.length)];
+}
+
+// Aquí el resto de las funciones como takeAction, updateEnemyAttack, etc.
+
+initializeNationOptions(); // Llamada para inicializar opciones de naciones
 function selectNation() {
     const selectedNation = document.getElementById("nationSelect").value;
     const enemyName = enemyNames[Math.floor(Math.random() * enemyNames.length)];
