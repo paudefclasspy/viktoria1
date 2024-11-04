@@ -19,13 +19,13 @@ class Nation {
         `;
     }
 
-    enemyAttack() {
-        const success = Math.random() < 0.5; // 50% de probabilidad de ataque exitoso
+    attemptAttack() {
+        const success = Math.random() < 0.5; // 50% probabilidad de ataque exitoso
         if (success) {
             this.stability -= 1; // Disminuir estabilidad
-            return `${this.enemyName} ha atacado y ha causado daño. Estabilidad ahora: ${this.stability}`;
+            return `El ataque de ${this.enemyName} fue exitoso. Perdieron estabilidad.`;
         } else {
-            return `${this.enemyName} intentó atacar, pero falló.`;
+            return `El ataque de ${this.enemyName} fracasó.`;
         }
     }
 
@@ -60,6 +60,7 @@ function startGame() {
     });
 
     document.getElementById("intro-section").style.display = "block"; // Mostrar selección de nación
+    document.getElementById("attackSection").style.display = "none"; // Ocultar sección de defensa al inicio
 }
 
 function selectNation() {
@@ -84,34 +85,32 @@ function takeAction(action) {
     let actionMessage;
     switch (action) {
         case 'policy':
-            actionMessage = "Política implementada."; // Placeholder para política
+            actionMessage = "Política implementada.";
             break;
         case 'economy':
-            actionMessage = "Economía mejorada."; // Placeholder para economía
+            actionMessage = "Economía mejorada.";
             break;
         case 'diplomacy':
-            actionMessage = "Diplomacia aumentada."; // Placeholder para diplomacia
+            actionMessage = "Diplomacia aumentada.";
             break;
         case 'military':
-            actionMessage = "Militarización aumentada."; // Placeholder para militarización
+            actionMessage = "Militarización aumentada.";
             break;
         case 'research':
-            actionMessage = "Investigación completada."; // Placeholder para investigación
+            actionMessage = "Investigación completada.";
             break;
         default:
             return;
     }
     
-    // Limpiar la salida anterior antes de agregar un nuevo mensaje
     gameOutput.innerHTML = `<p>${actionMessage}</p>`;
-    
-    randomEvents(); // Llamar a eventos aleatorios
-    updateGameStatus(); // Actualizar estado del juego
-    updateEnemyAttack(); // Verificar ataques después de cada acción
+    randomEvents();
+    updateGameStatus();
+    updateEnemyAttack();
 }
 
 function randomEvents() {
-    if (Math.random() < 0.2) { // 20% de probabilidad de evento aleatorio
+    if (Math.random() < 0.2) { // 20% probabilidad de evento aleatorio
         const eventMessage = "Visita de Aurora: Todos los valores aumentan 2 puntos.";
         gameOutput.innerHTML += `<p>${eventMessage}</p>`;
         nation.stability = Math.min(nation.stability + 2, 10);
@@ -123,43 +122,40 @@ function randomEvents() {
 function updateEnemyAttack() {
     nation.turnsSinceLastAttack++;
     if (nation.turnsSinceLastAttack === 3) {
-        isAttackPhase = true; // Activar fase de ataque
-        gameOutput.innerHTML += `<p>${nation.enemyAttack()}</p>`;
+        isAttackPhase = true;
+        document.getElementById("attackSection").style.display = "block"; // Mostrar sección de defensa
+        gameOutput.innerHTML += `<p>${nation.enemyName} ha lanzado un ataque. ¿Deseas defenderte?</p>`;
         nation.turnsSinceLastAttack = 0; // Reiniciar contador de turnos
         disableActionButtons(); // Deshabilitar botones de acción
-        // Mostrar botones de defensa
-        document.getElementById("defendButton").disabled = false;
-        document.getElementById("notDefendButton").disabled = false;
     }
 }
 
 function defend() {
-    const outcome = Math.random() < 0.5; // 50% de probabilidad de éxito
+    const outcome = Math.random() < 0.5; // 50% probabilidad de éxito en defensa
+    let resultMessage;
     if (outcome) {
-        gameOutput.innerHTML += `<p>Has defendido con éxito tu nación contra ${nation.enemyName}.</p>`;
+        resultMessage = `Has defendido con éxito contra ${nation.enemyName}.`;
         nation.militaryPower++; // Incrementar poder militar
     } else {
-        gameOutput.innerHTML += `<p>Tu defensa falló. ${nation.enemyName} ha causado daño.</p>`;
-        nation.stability--; // Disminuir estabilidad en caso de fallo
+        resultMessage = `Tu defensa falló. ${nation.enemyName} causó daño.`;
+        nation.stability--; // Disminuir estabilidad
     }
-    
-    isAttackPhase = false; // Terminar fase de ataque
-    enableActionButtons(); // Rehabilitar botones de acción
-    // Ocultar botones de defensa
-    document.getElementById("defendButton").disabled = true;
-    document.getElementById("notDefendButton").disabled = true;
-    updateGameStatus();
+
+    gameOutput.innerHTML += `<p>${resultMessage}</p>`;
+    endAttackPhase();
 }
 
 function notDefend() {
-    gameOutput.innerHTML += `<p>Decidiste no defenderte de ${nation.enemyName}. Tu nación ha sufrido consecuencias.</p>`;
-    nation.stability--; // Disminuir estabilidad por no defenderse
-    
-    isAttackPhase = false; // Terminar fase de ataque
+    const resultMessage = `${nation.enemyName} ha atacado y ha causado daño ya que decidiste no defenderte.`;
+    nation.stability--; // Disminuir estabilidad
+    gameOutput.innerHTML += `<p>${resultMessage}</p>`;
+    endAttackPhase();
+}
+
+function endAttackPhase() {
+    isAttackPhase = false;
     enableActionButtons(); // Rehabilitar botones de acción
-    // Ocultar botones de defensa
-    document.getElementById("defendButton").disabled = true;
-    document.getElementById("notDefendButton").disabled = true;
+    document.getElementById("attackSection").style.display = "none"; // Ocultar sección de defensa
     updateGameStatus();
 }
 
