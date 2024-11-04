@@ -3,35 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Estrategia</title>
+    <title>Juego de Nación</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #game-section { display: none; }
-        #intro-section { display: block; }
-        button { margin-top: 10px; }
-        #gameOutput { margin-top: 20px; }
+        /* Estilo para hacer más agradable la vista */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        select {
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <h2>Selecciona tu Nación</h2>
+    <select id="nationSelector">
+        <!-- Opciones de nación se generarán dinámicamente -->
+    </select>
+    <button onclick="startGame()">Comenzar Partida</button>
 
-    <div id="intro-section">
-        <h2>Selecciona tu Nación</h2>
-        <select id="nationSelect"></select>
-        <button onclick="selectNation()">Iniciar Juego</button>
-    </div>
-
-    <div id="game-section">
-        <h2>Estado de la Nación</h2>
-        <div id="gameStatus"></div>
+    <div id="game-section" style="display:none;">
+        <h2>Juego de Nación</h2>
         <div id="gameOutput"></div>
-
-        <h3>Acciones</h3>
-        <button onclick="takeAction('policy')">Implementar Política</button>
+        <button onclick="takeAction('policy')">Implementar Políticas</button>
         <button onclick="takeAction('economy')">Mejorar Economía</button>
-        <button onclick="takeAction('diplomacy')">Aumentar Diplomacia</button>
         <button onclick="takeAction('military')">Militarizar</button>
+        <button onclick="takeAction('diplomacy')">Aumentar Diplomacia</button>
         <button onclick="takeAction('research')">Investigar</button>
-        <button onclick="conquer()">Conquistar Territorio</button>
+        <button onclick="takeAction('conquer')">Conquistar Territorio</button>
 
         <div id="attackSection" style="margin-top: 20px; display: none;">
             <h3>Defenderse del Ataque</h3>
@@ -41,8 +46,5 @@
     </div>
 
     <script src="game.js"></script>
-    <script>
-        startGame(); // Iniciar el juego al cargar la página
-    </script>
 </body>
 </html>
