@@ -119,14 +119,18 @@ function randomEvents() {
     }
 }
 
+// Aquí las clases y funciones previas...
+
 function updateEnemyAttack() {
     nation.turnsSinceLastAttack++;
     if (nation.turnsSinceLastAttack === 3) {
         isAttackPhase = true;
-        document.getElementById("attackSection").style.display = "block"; // Mostrar sección de defensa
+        document.getElementById("attackSection").style.display = "block"; // Mostrar menú de defensa
+        document.getElementById("defendButton").disabled = false; // Habilitar botón de defender
+        document.getElementById("notDefendButton").disabled = false; // Habilitar botón de no defender
         gameOutput.innerHTML += `<p>${nation.enemyName} ha lanzado un ataque. ¿Deseas defenderte?</p>`;
         nation.turnsSinceLastAttack = 0; // Reiniciar contador de turnos
-        disableActionButtons(); // Deshabilitar botones de acción
+        disableActionButtons(); // Deshabilitar otros botones de acción
     }
 }
 
@@ -156,6 +160,8 @@ function endAttackPhase() {
     isAttackPhase = false;
     enableActionButtons(); // Rehabilitar botones de acción
     document.getElementById("attackSection").style.display = "none"; // Ocultar sección de defensa
+    document.getElementById("defendButton").disabled = true; // Deshabilitar botón de defender
+    document.getElementById("notDefendButton").disabled = true; // Deshabilitar botón de no defender
     updateGameStatus();
 }
 
